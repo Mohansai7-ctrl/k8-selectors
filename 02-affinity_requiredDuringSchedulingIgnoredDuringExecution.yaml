@@ -7,7 +7,7 @@ spec:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchingExpressiong:
+        - matchingExpressions:
           - key: hardware   #with these labels alredy nodes are labelled, it it matches then pods will be scheduled in those nodes.
             operator: In
             values:
