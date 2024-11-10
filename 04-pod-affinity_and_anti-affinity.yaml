@@ -4,7 +4,7 @@ kind: Pod
 metadata:
   name: pod-1
   labels:
-    pupose: pod-1-affinity
+    purpose: pod-1-affinity
 spec:
   containers:
   - name: nginx
@@ -44,7 +44,7 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
-          - key: pupose
+          - key: purpose
             operator: In
             values:
             - pod-1-affinity
