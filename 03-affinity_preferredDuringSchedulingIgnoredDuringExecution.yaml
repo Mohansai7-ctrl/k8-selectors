@@ -6,7 +6,7 @@ spec:
   affinity:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100  #NodeAffinityWeight
+      - weight: 100  #NodeAffinityWeight  #this is labelled in node2
         preference:
           matchExpressions:
           - key: hardware
@@ -14,12 +14,13 @@ spec:
             values:
             - amd
       - weight: 1  #instead of nodeSelectorTerms it will have weightage and preference and more wieghtage have more preference meaning(1-100) 50>10>1
-        preference:
+        preference: #tis weight 1 is labelled in node1
           matchExpressions:
           - key: hardware
             operator: In
             values:
             - gpu
+        #after execution, pod nginx will be created in node2 as preference more weight 100
   containers:
   - name: nginx
     image: nginx:stable-perl
@@ -28,3 +29,15 @@ spec:
     operator: "Equal"
     value: "gpu"
     effect: "NoSchedule"
+
+# steps/commands:
+# 336  10/11/24 15:23:18 kubectl apply -f 03-affinity_preferredDuringSchedulingIgnoredDuringExecution.yaml
+#   337  10/11/24 15:23:27 kubectl get pod -o wide
+#   338  10/11/24 15:23:56 kubectl describe pod nginx
+#   339  10/11/24 15:24:12 clear
+#   340  10/11/24 15:24:17 kubectl get nodes
+#   341  10/11/24 15:24:37 kubectl label nodes ip-192-168-32-254.ec2.internal hardware=amd
+#   342  10/11/24 15:25:15 kubectl delete -f 03-affinity_preferredDuringSchedulingIgnoredDuringExecution.yaml
+#   343  10/11/24 15:25:19 git pull
+#   344  10/11/24 15:25:28 kubectl apply -f 03-affinity_preferredDuringSchedulingIgnoredDuringExecution.yaml
+#   345  10/11/24 15:25:38 kubectl get pod -o wide
