@@ -8,7 +8,7 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchingExpressiong:
-          - key: hardware
+          - key: hardware   #with these labels alredy nodes are labelled, it it matches then pods will be scheduled in those nodes.
             operator: In
             values:
             - gpu
