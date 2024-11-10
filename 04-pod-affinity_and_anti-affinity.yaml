@@ -4,7 +4,7 @@ kind: Pod
 metadata:
   name: Pod-1
   labels:
-    pupose: Pod-1 affinity
+    pupose: pod-1-affinity
 spec:
   containers:
   - name: nginx
@@ -26,7 +26,7 @@ spec:
           - key: purpose
             operator: In
             values:
-            - Pod-1 affinity
+            - pod-1-affinity
         topologyKey: topology.kubernetes.io/zone
   containers:
   - name: nginx
@@ -47,7 +47,7 @@ spec:
           - key: pupose
             operator: In
             values:
-            - Pod-1 affinity
+            - pod-1-affinity
         topologyKey: topology.kubernetes.io/zone
   containers:
   - name: nginx
