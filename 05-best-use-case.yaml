@@ -1,0 +1,76 @@
+#first creating 3 redis cache in 3 nodes - this is achieved by podAntiAffinity so that one cache pod is placed in one node which anti affinity another cache pod to be placed in the same node, in this way we can achieve 3 cache pods in 3 nodes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+spec:
+  selector:
+    matchLabels:
+      app: store
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: store
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - store
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: redis-cache-server
+        image: redis:3.2-alpine
+
+---
+
+#now creating backend web-server in 2 things:
+# i) creating 3 web-servers in 3 nodes by podAntiAffinity
+# ii) creating the 3 web-servers in the nodes where cache servers are there this can be achieved by podAffinity
+
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-store
+  template:
+    metadata:
+      labels:
+        app: web-store
+    spec:
+      affinity:
+        podAntiAffinity:  #it places web-server on all 3 nodes
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-store
+            topologyKey: "kubernetes.io/hostname"
+        podAffinity:   #it places the web-server in the nodes where cache-server is there.
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - store
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: web-server
+        image: nginx:1.16-alpine
+
+
+
+        
+  

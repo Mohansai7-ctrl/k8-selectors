@@ -1,0 +1,54 @@
+#first create pod-1 with lables:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: Pod-1
+  labels:
+    pupose: Pod-1 affinity
+spec:
+  containers:
+  - name: nginx
+    image: nginx:stable-perl
+
+---
+
+#now create Pod-2 in the node where Pod-1 exists/created using Pod-1 labels as labelSelector.matchExpressions (podAffinity)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: Pod-2
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+        - matchExpressions:
+          - key: purpose
+            operator: In
+            values:
+            - Pod-1 affinity
+        topologyKey: topology.kubernetes.io/zone
+  containers:
+  - name: nginx
+    image: nginx:stable-perl
+---
+
+#now creating Pod-3 in the other nodes, meaning where Pod-1 is there it should not allow scheduler to schedule this Pod-3 in that node (podAntiAffinity)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: Pod-3
+spec:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: pupose
+            operator: In
+            values:
+            - Pod-1 affinity
+        topologyKey: topology.kubernetes.io/zone
+  containers:
+  - name: nginx
+    image: nginx:stable-perl

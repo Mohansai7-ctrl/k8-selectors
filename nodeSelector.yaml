@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  nodeSelector:    #if node also having the lable as hardware: gpu then kube-scheduler will assign this pod to that node
+    hardware: gpu
+  containers:
+  - name: nginx
+    image: nginx:stable-perl
+  
