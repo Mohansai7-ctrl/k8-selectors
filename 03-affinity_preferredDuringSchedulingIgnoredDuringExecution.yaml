@@ -9,10 +9,10 @@ spec:
       - weight: 100  #NodeAffinityWeight
         preference:
           matchExpressions:
-          - key: another-node-label-key
+          - key: hardware
             operator: In
             values:
-            - another-node-lable-value
+            - amd
       - weight: 1  #instead of nodeSelectorTerms it will have weightage and preference and more wieghtage have more preference meaning(1-100) 50>10>1
         preference:
           matchExpressions:
