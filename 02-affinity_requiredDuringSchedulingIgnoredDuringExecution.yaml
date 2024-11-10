@@ -13,7 +13,7 @@ spec:
             values:
             - gpu
   containers:
-    name: nginx
+  - name: nginx
     image: nginx:stable-perl
   tolerations:
   - key: "hardware"
