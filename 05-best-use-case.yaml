@@ -1,4 +1,7 @@
 #first creating 3 redis cache in 3 nodes - this is achieved by podAntiAffinity so that one cache pod is placed in one node which anti affinity another cache pod to be placed in the same node, in this way we can achieve 3 cache pods in 3 nodes
+# for podAntiAffinity, need to untaint the node.
+# kubectl taint node <node_name> hardware=gpu:NoSchedule-
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -33,7 +36,7 @@ spec:
 # i) creating 3 web-servers in 3 nodes by podAntiAffinity
 # ii) creating the 3 web-servers in the nodes where cache servers are there this can be achieved by podAffinity
 
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-server
