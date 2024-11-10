@@ -8,4 +8,8 @@ spec:
   containers:
   - name: nginx
     image: nginx:stable-perl
+
+# To create/add lable to node 2 ways:
+# 1)kubectl edit node <node-name> then add this nodeSelector label as keyvalue pair and save it.
+# 2)kubectl label nodes <node_name> hardware=gpu
   
