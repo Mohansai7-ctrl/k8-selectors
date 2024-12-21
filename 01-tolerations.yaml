@@ -15,3 +15,5 @@ spec:
   # nodeSelector:   #if node also having the lable as hardware: gpu then kube-scheduler will assign this pod to that node
   #   hardware: gpu
 
+
+
